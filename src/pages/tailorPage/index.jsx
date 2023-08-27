@@ -1,6 +1,6 @@
 import { Fragment, useContext, useEffect } from "react";
 import { useOrders } from "../../states/orders";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Table from "../../components/Table";
 
 import logo from "../../assets/images/logo.svg";
@@ -8,22 +8,35 @@ import searchIcon from "../../assets/images/icons8-search.svg";
 import "../style.scss";
 import { GeneralContextInfo } from "../../context";
 import FormCustom from "../../components/FormCustom";
+import { useAuth } from "../../states/auth";
 
 const TailorPage = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { getOrders } = useOrders();
-  const { page, pageLimit, search, handleChange, show, closeModal,setRole } =
-    useContext(GeneralContextInfo);
+  const {
+    page,
+    search,
+    handleChange,
+    show,
+    closeModal,
+    setRole,
+    setPageLimit,
+  } = useContext(GeneralContextInfo);
 
   useEffect(() => {
+    const pageLimit = Math.ceil(window.innerHeight / 50);
+    setPageLimit(pageLimit);
     getOrders({ page, pageLimit, search });
     setRole("tailor");
-  }, [page, getOrders, search, pageLimit,setRole]);
+  }, [page, getOrders, search, setRole, setPageLimit]);
 
   return (
     <Fragment>
       <nav className="nav">
-        <img src={logo} alt="hero" className="hero" />
+        <Link to={`/${user}`}>
+          <img src={logo} alt="hero" className="hero" />
+        </Link>
         <div className="searchBox">
           <input
             type="text"
@@ -43,6 +56,9 @@ const TailorPage = () => {
           >
             Tarix
           </button>
+          <div className="icon">
+            
+          </div>
         </div>
       </nav>
 
@@ -69,7 +85,7 @@ const TailorPage = () => {
         <div className="close-btn">
           <i onClick={closeModal} className="fa-solid fa-xmark"></i>
         </div>
-        <FormCustom/>
+        <FormCustom />
       </div>
     </Fragment>
   );

@@ -35,6 +35,9 @@
   @media(min-width:1440px){
     height: auto;
   }
+  @media(max-width:1000px){
+    width: 100% ;
+  }
 }
 
 label {
@@ -73,8 +76,8 @@ label {
   width: 100vw;
   transition: 0.3s;
   background: rgba(255, 255, 255, 0.13);
-  backdrop-filter: blur(10px);
-  z-index: 20;
+  backdrop-filter: blur(5px);
+  z-index: 10;
 }
 
 .customerModal {
@@ -113,5 +116,49 @@ label {
     border-radius: 0px;
   }
 
+}
 
+.account{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  .user{
+    position: relative;
+    img{
+      width: 35px;
+      cursor: pointer;
+    }
+    .logOut{
+      position: absolute;
+      top: 40px;
+      padding: 10px;
+      border-radius: 3px;
+      box-shadow: 1px 1px 10px gray;
+      text-align: center;
+      right: -10px;
+      background: white;
+      img{
+        width: 40px;
+      }
+      h4{
+        padding: 5px 20px;
+        font-size: 18px;
+        padding-bottom: 5px;
+      }
+      div{
+        transition: 0.3s;
+        padding: 10px 20px;
+        display: flex;
+        cursor: pointer;
+        &:hover{
+          background: rgba(128, 128, 128, 0.331);
+        }
+        padding-top: 5px;
+        font-size: 16px;
+        gap: 2px;
+        gap: 1;
+        border-top: 1.5px solid gray;
+      }
+    }
+  }
 }

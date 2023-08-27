@@ -17,17 +17,8 @@ const GeneralContext = ({ children }) => {
   const [show, setShow] = useState(false);
   const [customerId, setCustomerId] = useState(null);
   const [page, setPage] = useState(1);
-  const [pageLimit, setPageLimit] = useState(
-    +localStorage.getItem("pageLimit") || 10
-  );
+  const [pageLimit, setPageLimit] = useState(10);
   const [search, setSearch] = useState("");
-  const customerInfo = {
-    name: "",
-    phone1: "",
-    phone2: "",
-    notes: "",
-  };
-  const [customerValues, setCustomerValues] = useState(customerInfo);
   const [dropdownData, setDropdownData] = useState([]);
   const [endDate, setEndDate] = useState("");
   const [createdAt, setCreatedAt] = useState("");
@@ -49,9 +40,8 @@ const GeneralContext = ({ children }) => {
     setCreatedAt("");
   };
 
-  const closeCustomerModal = () => {
-    setCustomerValues(customerInfo);
-    setShowCustomerModal(false);
+  const setName = (name) => {
+    form.setFieldValue(name);
   };
 
   const handlePage = (current) => {
@@ -66,18 +56,14 @@ const GeneralContext = ({ children }) => {
     }
   };
 
-  const onShowSizeChange = (current, size) => {
-    setPageLimit(size);
-    localStorage.setItem("pageLimit", size);
-  };
-
   const addNewCustomer = async (values) => {
     try {
       setLoadingBtn(true);
       const { data } = await request.post("customers", values);
       setCustomerId(data);
       form.setFieldValue("customer", values.name);
-      closeCustomerModal();
+      setShowCustomerModal(false);
+      setDropdownShow(false);
       toast.success("Yangi mijoz qo'shildi");
     } catch (err) {
       console.log(err.message);
@@ -106,6 +92,7 @@ const GeneralContext = ({ children }) => {
     const values = await form.getFieldsValue();
     let arr = [];
     let res = { ...values };
+    console.log(res);
     order.customerId = customerId;
     order.products = getProduct();
     delete res.customer;
@@ -117,10 +104,12 @@ const GeneralContext = ({ children }) => {
     delete res.priority;
     order.endDate = endDate;
     delete res.endDate;
+    console.log(res);
     for (let i in res) {
       arr.push({ name: i, value: res[i] });
     }
     order.params = arr;
+    console.log(order);
     if (selected) {
       const id = selected;
       putOrder({ id, order });
@@ -148,7 +137,6 @@ const GeneralContext = ({ children }) => {
     try {
       const { data } = await request(`customers/${id}`);
       setCostumeValue(data);
-      console.log(data);
     } catch (err) {
       console.log(err);
     }
@@ -169,8 +157,8 @@ const GeneralContext = ({ children }) => {
       setJacketValue(splitArr[2] !== "_" ? splitArr[2] : "");
       res.params.map((el) => {
         const { name, value } = el;
-        obj[name] = +value;
-      });
+        obj[name] = value;
+      })
       form.setFieldsValue(obj);
       setShow(true);
     } catch (err) {
@@ -209,35 +197,41 @@ const GeneralContext = ({ children }) => {
           reason: checkCancel,
         });
         toast.success("Buyurtma bekor qilindi!");
+        getOrders(page, pageLimit, search);
       } catch (err) {
         console.log(err);
       } finally {
         setLoadingBtn(false);
       }
     }
+    setShow(false);
   };
 
   const complete = async () => {
     const checkComplete = prompt("Izoh qoldiring!");
-    try {
-      setLoadingBtn(true);
-      await request.put(`orders/${selected}/complete`, {
-        notes: checkComplete,
-      });
-      toast.success("Buyurtma bajarildi!");
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoadingBtn(false);
+    
+    if (checkComplete) {
+      try {
+        setLoadingBtn(true);
+        await request.put(`orders/${selected}/complete`, {
+          notes: checkComplete,
+        });
+        toast.success("Buyurtma tugallandi!");
+        getOrders(page, pageLimit, search);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoadingBtn(false);
+      }
     }
-    // if (checkComplete) {
-    // }
+    setShow(false)
   };
 
   const newState = {
     form,
     setShowCustomerModal,
     dropdownData,
+    setName,
     cancelOrder,
     complete,
     costumeValue,
@@ -250,21 +244,20 @@ const GeneralContext = ({ children }) => {
     onChangeTrouthers,
     endDate,
     closeModal,
-    closeCustomerModal,
     trouthersValue,
     createdAt,
+    setPageLimit,
     autoComplete,
     submit,
     editOrder,
     setCustomer,
     selected,
     customerId,
+    setDropdownShow,
     showCustomerModal,
     addNewCustomer,
-    customerValues,
     setCustomerId,
     setSelected,
-    onShowSizeChange,
     show,
     setShow,
     loadingBtn,

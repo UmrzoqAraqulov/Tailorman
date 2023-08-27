@@ -7,11 +7,25 @@ import { useContext } from "react";
 import { GeneralContextInfo } from "../context";
 
 const Table = ({ checkArchive }) => {
-  const { loading, ordersData, ordersArchive, total,totalArchive } = useOrders();
-  const { page, pageLimit, onShowSizeChange, editOrder, handlePage, role } =
+  const { loading, ordersData, ordersArchive, total, totalArchive } =
+    useOrders();
+  const { page, pageLimit, editOrder, handlePage, role } =
     useContext(GeneralContextInfo);
-  const values = [10, 15, 20, 30];
-
+  const getColorDate = (date) => {
+    let nowDate = new Date();
+    let nowMonth = nowDate.getMonth();
+    let nowDay = nowDate.getDate();
+    let endDate = date.split("T")[0].split("-");
+    if (+nowMonth+1 === +endDate[1]) {
+      if (+endDate[2] - +nowDay < 4 && +endDate[2] - +nowDay > 0) {
+        return "red";
+      } else if (+endDate[2] - +nowDay < 8 && +endDate[2] - +nowDay > 0) {
+        return "orange";
+      } else {
+        return "black";
+      }
+    }
+  };
   return (
     <section className="table-wrapper">
       {loading ? (
@@ -43,12 +57,12 @@ const Table = ({ checkArchive }) => {
                 </th>
               ) : null}
               <th className="last-th" scope="col">
-                KO’PROQ
+                {"KO'PROQ"}
               </th>
             </tr>
           </thead>
           <tbody className="table-row">
-            {checkArchive!=="archive"
+            {checkArchive !== "archive"
               ? ordersData.map((el, i) => (
                   <tr key={el.id} className="tb-tr">
                     <td className="first-td">
@@ -59,7 +73,9 @@ const Table = ({ checkArchive }) => {
                         el?.customer.slice(1)}
                     </td>
                     <td>{el?.products}</td>
-                    <td>{el?.endDate?.split("T")[0]}</td>
+                    <td style={{ color: getColorDate(el?.endDate) }}>
+                      {el?.endDate?.split("T")[0]}
+                    </td>
                     <td>{el?.createdAt?.split("T")[0]}</td>
                     {role === "admin" ? <td>{el?.toPay}</td> : null}
                     <td onClick={() => editOrder(el.id)} className="last-td">
@@ -88,17 +104,15 @@ const Table = ({ checkArchive }) => {
           </tbody>
         </table>
       )}
-      {!loading ? (
+      {!loading && (totalArchive>0 || total>0) ? (
         <Pagination
           current={page}
           defaultCurrent={page}
-          showSizeChanger={true}
+          showSizeChanger={false}
           onChange={handlePage}
-          pageSizeOptions={values}
-          total={checkArchive==="archive"?totalArchive:total}
+          total={checkArchive === "archive" ? totalArchive : total}
           defaultPageSize={pageLimit}
           className="pagination"
-          onShowSizeChange={onShowSizeChange}
         />
       ) : null}
     </section>

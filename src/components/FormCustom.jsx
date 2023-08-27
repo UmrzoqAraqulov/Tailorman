@@ -13,11 +13,10 @@ import jecket2 from "../assets/images/jecket2.jpg";
 import { useOrders } from "../states/orders";
 import "./formStyle.scss";
 
-const FormCustom = ({ check }) => {
+const FormCustom = ({ check,setName }) => {
   const { loadingBtn } = useOrders();
   const {
     form,
-    setShowCustomerModal,
     dropdownData,
     costumeValue,
     onChangeCostume,
@@ -32,11 +31,16 @@ const FormCustom = ({ check }) => {
     selected,
     onChangeDate,
     createdAt,
-    setCustomer,
+    setCustomer,setShowCustomerModal,
     role,
     cancelOrder,
     complete,
   } = useContext(GeneralContextInfo);
+
+  const openModal = () =>{
+    setShowCustomerModal(true);
+    setName(form.getFieldValue("customer"));
+  }
 
   return (
     <div>
@@ -66,12 +70,11 @@ const FormCustom = ({ check }) => {
                 >
                   <Input placeholder="(AutoComplete)" />
                 </Form.Item>
-                <p
-                  className="addCustomerBtn"
-                  onClick={() => setShowCustomerModal(true)}
-                >
-                  Yangi
-                </p>
+                {!selected ? (
+                  <p className="addCustomerBtn" onClick={openModal}>
+                    Yangi
+                  </p>
+                ) : null}
               </div>
               {dropdownShow ? (
                 <ul className="customerDropdown">
@@ -362,25 +365,25 @@ const FormCustom = ({ check }) => {
                   value={costumeValue}
                   className="costumRadio"
                 >
-                  <Radio className="classicSuit" value="classicSuit">
+                  <Radio className="classicSuit" value="Классик">
                     <div>
                       <img src={classicSuit} alt="" />
                       <p>Классические костюмы</p>
                     </div>
                   </Radio>
-                  <Radio className="classicSuit" value="dvubortnyKastum">
+                  <Radio className="classicSuit" value="Двубортные">
                     <div>
                       <img src={dvubortniy} alt="" />
                       <p>Двубортные костюмы</p>
                     </div>
                   </Radio>
-                  <Radio className="classicSuit" value="smoking">
+                  <Radio className="classicSuit" value="Смокинги">
                     <div>
                       <img src={smoking} alt="" />
                       <p>Смокинги</p>
                     </div>
                   </Radio>
-                  <Radio value="odnobortniyKastyum" className="classicSuit">
+                  <Radio value="Однобортные" className="classicSuit">
                     <div>
                       <img src={odnobortniy} alt="" />
                       <p>Однобортные костюмы</p>
@@ -396,13 +399,13 @@ const FormCustom = ({ check }) => {
                     onChange={onChangeTrouthers}
                     value={trouthersValue}
                   >
-                    <Radio value="classicTrouthers" className="classicSuit">
+                    <Radio value="Брюки" className="classicSuit">
                       <div>
                         <img src={classicPants} alt="" />
                         <p>Классические брюки</p>
                       </div>
                     </Radio>
-                    <Radio value="karmanPoyas" className="classicSuit">
+                    <Radio value="Пояс" className="classicSuit">
                       <div>
                         <img src={poyas} alt="" />
                         <p>Карманы, пояс</p>
@@ -417,13 +420,13 @@ const FormCustom = ({ check }) => {
                     onChange={onChangeJacket}
                     value={jacketValue}
                   >
-                    <Radio value="jacket1" className="classicSuit">
+                    <Radio value="Жилеты-1" className="classicSuit">
                       <div>
                         <img src={jecket1} alt="" />
                         <p>Жилеты</p>
                       </div>
                     </Radio>
-                    <Radio value="jacket2" className="classicSuit">
+                    <Radio value="Жилеты-2" className="classicSuit">
                       <div>
                         <img src={jecket2} alt="" />
                         <p>Жилеты</p>
@@ -503,11 +506,18 @@ const FormCustom = ({ check }) => {
             </Button>
           </Form.Item>
         ) : null}
-        {check === "admin" && selected? (
+        {check === "admin" && selected ? (
           <div className="order-buttons">
-            <p className="order-btn cancel-btn" onClick={cancelOrder}>BEKOR QILISH</p>
-            <p className="order-btn edit-btn" onClick={submit}>TAHRIRLASH</p>
-            <p className="order-btn complete-btn" onClick={complete}>TUGALLASH</p>
+            <p className="order-btn complete-btn" onClick={complete}>
+              TUGALLASH
+            </p>
+            <p className="order-btn cancel-btn" onClick={cancelOrder}>
+              BEKOR QILISH
+            </p>
+            <div></div>
+            <p className="order-btn edit-btn" onClick={submit}>
+              SAQLASH
+            </p>
           </div>
         ) : null}
       </Form>
@@ -517,6 +527,7 @@ const FormCustom = ({ check }) => {
 
 FormCustom.propTypes = {
   check: PropTypes.string,
+  setName:PropTypes.func
 };
 
 export default FormCustom;

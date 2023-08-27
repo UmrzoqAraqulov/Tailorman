@@ -8,25 +8,30 @@ import "./history.scss";
 import "../style.scss";
 import { GeneralContextInfo } from "../../context";
 import FormCustom from "../../components/FormCustom";
+import { useAuth } from "../../states/auth";
+import { Link } from "react-router-dom";
 
 const HistoryPage = () => {
   const { getOrdersArchive } = useOrders();
+  const { user } = useAuth();
   const {
     handleChange,
-    pageLimit,
     page,
     search,
     show,
     closeModal,
     selected,
+    setPageLimit,
   } = useContext(GeneralContextInfo);
 
   const [sort, setSort] = useState({ createdAt: "", endDate: "" });
   const { createdAt, endDate } = sort;
 
   useEffect(() => {
+    const pageLimit = Math.ceil(window.innerHeight / 50);
+    setPageLimit(pageLimit);
     getOrdersArchive({ page, pageLimit, search });
-  }, [page, getOrdersArchive, search, pageLimit]);
+  }, [page, getOrdersArchive, search, setPageLimit]);
 
   const initialOrders = (e) => {
     console.log(e.target.name);
@@ -36,7 +41,9 @@ const HistoryPage = () => {
   return (
     <Fragment>
       <nav className="nav">
-        <img src={logo} alt="hero" className="hero" />
+        <Link to={`/${user}`}>
+          <img src={logo} alt="hero" className="hero" />
+        </Link>
         <div className="filter-wrapper">
           <div className="filter-input">
             <p>Boshlanish:</p>

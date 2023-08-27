@@ -1,6 +1,6 @@
-import { Fragment, useContext, useEffect } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { useOrders } from "../../states/orders";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Table from "../../components/Table";
 import { Input } from "antd";
 import { Form, Button, Dropdown } from "antd";
@@ -10,12 +10,17 @@ import FormCustom from "../../components/FormCustom";
 import logo from "../../assets/images/logo.svg";
 import searchIcon from "../../assets/images/search.svg";
 import hamburger from "../../assets/images/hamburger.svg";
+import account from "../../assets/images/userIcon.svg";
 
 import "../style.scss";
 import "./admin.scss";
+import { useAuth } from "../../states/auth";
 
 const AdminPage = () => {
+  const { user,logOut } = useAuth();
   const navigate = useNavigate();
+  const [form] = Form.useForm();
+  const [accountShow, setAccountShow] = useState(false);
   const { getOrders } = useOrders();
   const {
     search,
@@ -23,20 +28,43 @@ const AdminPage = () => {
     showCustomerModal,
     setShow,
     show,
-    closeCustomerModal,
+    setShowCustomerModal,
     addNewCustomer,
-    customerValues,selected,
+    setName,
+    selected,
     closeModal,
     handleChange,
     loadingBtn,
     setRole,
-    pageLimit,
+    setPageLimit,
   } = useContext(GeneralContextInfo);
 
   useEffect(() => {
+    const pageLimit = Math.ceil(window.innerHeight / 50);
+    setPageLimit(pageLimit);
     setRole("admin");
     getOrders({ page, pageLimit, search });
-  }, [page, getOrders, search, pageLimit,setRole]);
+  }, [page, getOrders, search, setRole, setPageLimit]);
+
+  const finish = async () => {
+    const value = await form.getFieldsValue();
+    setName(value.name);
+    addNewCustomer(value);
+    closeCustomerModal();
+  };
+
+  const controlAccount = () => {
+    setAccountShow(!accountShow);
+  };
+
+  const closeCustomerModal = () => {
+    setShowCustomerModal(false);
+    form.resetFields();
+  };
+
+  const setCustomerName = (value) => {
+    form.setFieldValue("name", value);
+  };
 
   const items = [
     {
@@ -60,7 +88,9 @@ const AdminPage = () => {
   return (
     <Fragment>
       <nav className="nav">
-        <img src={logo} alt="hero" className="hero" />
+        <Link to={`/${user}`}>
+          <img src={logo} alt="hero" className="hero" />
+        </Link>
         <div className="searchBox">
           <input
             type="text"
@@ -73,19 +103,33 @@ const AdminPage = () => {
           </label>
         </div>
 
-        <div className="nav-right">
-          <button
-            onClick={() => navigate("/history")}
-            className="nav-right_btn historyBtn"
-          >
-            Tarix
-          </button>
-          <button
-            onClick={() => setShow(true)}
-            className="nav-right_btn getOrderBtn"
-          >
-            + Buyurtma
-          </button>
+        <div className="account">
+          <div className="nav-right">
+            <button
+              onClick={() => navigate("/history")}
+              className="nav-right_btn historyBtn"
+            >
+              Tarix
+            </button>
+            <button
+              onClick={() => setShow(true)}
+              className="nav-right_btn getOrderBtn"
+            >
+              + Buyurtma
+            </button>
+          </div>
+          <div className="user">
+            <img src={account} alt="" onClick={controlAccount} />
+
+            <div style={accountShow?{visibility:"visible",opacity:"1"}:{visibility:"hidden",opacity:"0"}} className="logOut">
+              <img src={account} alt="" />
+              <h4>{user[0].toUpperCase() + user.slice(1).toLowerCase()}</h4>
+              <div onClick={()=>logOut(navigate)}>
+                <p>Chiqish</p>
+                <i className="fa-solid fa-right-from-bracket"></i>
+              </div>
+            </div>
+          </div>
         </div>
         {/* -----------------Dropdown------------------- */}
         <Dropdown
@@ -101,8 +145,8 @@ const AdminPage = () => {
         </Dropdown>
         {/* ---------------------------------------------- */}
       </nav>
-      
-      <Table/>
+
+      <Table />
 
       <div
         style={
@@ -122,15 +166,15 @@ const AdminPage = () => {
         }
         className="modal"
       >
-        {selected?<h2>BUYURTMA</h2>:null}
         <div className="close-btn">
           <i onClick={closeModal} className="fa-solid fa-xmark"></i>
         </div>
-        <FormCustom check="admin"/>
+        {!selected ? <h2>BUYURTMA</h2> : null}
+        <FormCustom check="admin" setName={setCustomerName} />
       </div>
 
       <div
-        onClick={() => closeCustomerModal}
+        onClick={closeCustomerModal}
         style={
           showCustomerModal
             ? { visibility: "visible", opacity: "1" }
@@ -147,11 +191,7 @@ const AdminPage = () => {
         }
         className="customerModal"
       >
-        <Form
-          onFinish={addNewCustomer}
-          className="customerForm"
-          initialValues={customerValues}
-        >
+        <Form form={form} onFinish={finish} className="customerForm">
           <div>
             <label htmlFor="name">Ism</label>
             <Form.Item

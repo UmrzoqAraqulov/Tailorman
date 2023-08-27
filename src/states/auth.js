@@ -21,10 +21,18 @@ export const useAuth = create((set) => ({
         if (userName === "admin") navigate("/admin");
         else navigate("/tailor");
       }
-    }catch(err){
+    } catch (err) {
       console.log(err.message);
     } finally {
       set({ loading: false });
+    }
+  },
+  logOut: (navigate) => {
+    const checkAuth = confirm("Accountdan chiqmoqchimisiz!");
+    if (checkAuth) {
+      set({ isAuthenticated: "", user: "" });
+      Cookies.remove(TOKEN);
+      navigate("/login");
     }
   },
 }));
