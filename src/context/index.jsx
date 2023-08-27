@@ -201,7 +201,7 @@ const GeneralContext = ({ children }) => {
   };
 
   const cancelOrder = async () => {
-    const checkCancel = prompt("Nima sabab buyurtmani bekor qilmoqchisiz!");
+    const checkCancel = prompt("Nima sabab buyurtmani bekor qilmoqchisiz?");
     if (checkCancel) {
       try {
         setLoadingBtn(true);

@@ -90,12 +90,12 @@ const FormCustom = ({ check }) => {
               )}
             </div>
             {selected ? (
-              <div className="endDate">
-                <label htmlFor="endDate">Olingan vaqti</label>
+              <div className="receiveDate">
+                <label htmlFor="receiveDate">Olingan vaqti</label>
                 <input
                   type="date"
                   name="createdAt"
-                  id="endDate"
+                  id="receiveDate"
                   required
                   value={createdAt}
                   disabled
