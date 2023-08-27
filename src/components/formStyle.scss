@@ -1,0 +1,346 @@
+.modal-forms {
+  padding: 10px 20px;
+  background: white;
+  gap: 20px;
+
+  .forms {
+    display: flex;
+
+    label {
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .addOrderModal {
+      width: 300px;
+      padding-right: 10px;
+      border-right: 1.5px solid rgba(0, 0, 0, 0.863);
+
+      label {
+        display: inline-block;
+        padding-bottom: 5px;
+      }
+
+      .ant-input-number,
+      .ant-input-affix-wrapper,
+      .ant-picker,
+      #notes {
+        border-radius: 0px !important;
+        padding: 8px 10px !important;
+      }
+
+      #notes {
+        height: 100px;
+      }
+
+      .customerName {
+        position: relative;
+        width: 100%;
+
+        .ant-row {
+          width: 100%;
+        }
+
+        div {
+          display: flex;
+
+          .addCustomerBtn {
+            padding: 6px 20px;
+            height: 40px;
+            background: blue;
+            color: white;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+          }
+        }
+      }
+
+      .customerDropdown {
+        position: absolute;
+        top: 65px;
+        left: 0;
+        width: 100%;
+        max-height: 100px;
+        overflow-y: scroll;
+        z-index: 10;
+        background: white;
+
+        li {
+          cursor: pointer;
+          padding: 3px 2px;
+
+          background: rgba(128, 128, 128, 0.3);
+
+          &:hover {
+            background: rgba(128, 128, 128, 0.2);
+          }
+        }
+      }
+
+      .checkBox {
+        display: flex;
+        align-items: center;
+        height: 50px;
+        gap: 8px;
+
+        .ant-checkbox-inner,
+        .ant-checkbox-wrapper,
+        .ant-row {
+          padding: 0;
+          height: 16px;
+          border-radius: 0px;
+        }
+      }
+
+    }
+
+    .formSizes {
+      padding-left: 10px;
+      display: flex;
+
+      .orderSizes {
+        display: flex;
+        flex-direction: column;
+
+        .ant-form-item-control-input-content {
+          width: 70px;
+          flex-grow: 0;
+        }
+
+        label {
+          font-size: 15px;
+          width: 110px !important;
+        }
+
+        .orderSize {
+          display: flex;
+          padding: 2px 0px;
+        }
+      }
+
+      .ant-input-number {
+        margin: 0 !important;
+        border-radius: 0px !important;
+        padding: 0px !important;
+      }
+
+      .classicSuit {
+        display: flex;
+        flex-direction: column;
+
+        p {
+          text-align: center;
+        }
+      }
+
+      .Radios {
+        width: 400px;
+
+        img {
+          width: 100px;
+        }
+
+        label {
+          font-size: 14px;
+        }
+
+        .ant-radio {
+          transform: translate(40px);
+        }
+
+        .costumRadio {
+          display: flex;
+
+        }
+
+        .ant-radio-wrapper span:last-child {
+          padding: 0px;
+
+        }
+      }
+
+      .colorNumber {
+        display: flex;
+        gap: 10px;
+
+        .ant-input-affix-wrapper {
+          border-radius: 0px !important;
+        }
+
+        div {
+          display: flex;
+          gap: 5px;
+        }
+      }
+    }
+
+  }
+
+  .confirmBtn {
+    // border: 1px solid #000000;
+    border: none;
+    border-radius: 0px !important;
+    display: flex;
+    justify-content: center;
+
+    // background: black;
+    background-image: radial-gradient(circle farthest-corner at 10% 20%,
+        rgba(7, 121, 222, 1) 0%,
+        rgba(20, 72, 140, 1) 90%);
+    color: #fff;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 5px;
+      top: 5px;
+      border-top: 2px solid #fff;
+      border-left: 2px solid #fff;
+      width: 0px;
+      height: 0px;
+      opacity: 0;
+      transition: 0.3s;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      right: 5px;
+      bottom: 5px;
+      border-bottom: 2px solid #fff;
+      border-right: 2px solid #fff;
+      width: 0px;
+      height: 0px;
+      opacity: 0;
+      transition: 0.3s;
+    }
+
+    &:hover {
+      box-shadow: 4px 0px 10px rgb(184, 184, 184);
+      // transform: translateY(-5px);
+    }
+
+    &:hover::after,
+    &:hover::before {
+      height: 20px;
+      width: 20px;
+      opacity: 1;
+    }
+  }
+
+  .order-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+    margin-top: 20px;
+    width: 100%;
+
+    .order-btn {
+      width: 100%;
+      text-align: center;
+      cursor: pointer;
+      padding: 7px 0;
+      color: #fff;
+      font-size: 18px;
+      outline: none;
+      display: inline-block;
+      text-transform: uppercase;
+      transition: 0.3s;
+      position: relative;
+      border: none;
+      border-radius: 0px;
+
+      &:hover {
+        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      &:active {
+        transform: scale(0.95);
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+      }
+
+      &::before {
+        content: "";
+        position: absolute;
+        left: 5px;
+        top: 5px;
+        border-top: 2px solid #fff;
+        border-left: 2px solid #fff;
+        width: 0px;
+        height: 0px;
+        opacity: 0;
+        transition: 0.3s;
+      }
+
+      &::after {
+        content: "";
+        position: absolute;
+        right: 5px;
+        bottom: 5px;
+        border-bottom: 2px solid #fff;
+        border-right: 2px solid #fff;
+        width: 0px;
+        height: 0px;
+        opacity: 0;
+        transition: 0.3s;
+      }
+
+      &:hover {
+        box-shadow: 4px 0px 10px rgb(184, 184, 184);
+        // transform: translateY(-5px);
+      }
+
+      &:hover::after,
+      &:hover::before {
+        height: 20px;
+        width: 20px;
+        opacity: 1;
+      }
+    }
+
+    .cancel-btn {
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.15) 0%, rgba(0, 0, 0, 0.15) 100%), radial-gradient(at top center, rgba(255, 255, 255, 0.40) 0%, rgba(0, 0, 0, 0.40) 120%) #989898;
+      background-blend-mode: multiply, multiply;
+    }
+
+    .edit-btn {
+      background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+    }
+
+    .complete-btn {
+      background-image: linear-gradient(to right, #43e97b 0%, #38f9d7 100%);
+    }
+  }
+}
+
+.ant-form-item {
+  width: 100%;
+  margin: 0 !important;
+  padding: 0;
+}
+
+
+
+.addOrderModal {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  label {
+    font-weight: 600;
+  }
+}
+
+.endDate {
+  display: flex;
+  flex-direction: column;
+
+  #endDate {
+    width: 150px;
+    cursor: pointer;
+    font-size: 15px;
+    border-radius: 0px;
+    padding: 5px 10px;
+  }
+}
