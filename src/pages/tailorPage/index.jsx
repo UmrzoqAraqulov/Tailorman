@@ -56,12 +56,19 @@ const TailorPage = () => {
           >
             Tarix
           </button>
-          <div className="icon">
-            
-          </div>
+          <div className="icon"></div>
         </div>
       </nav>
-
+      <div
+        style={
+          show
+            ? { visibility: "visible", opacity: "1" }
+            : { visibility: "hidden", opacity: "0" }
+        }
+        className="close-btn"
+      >
+        <i onClick={closeModal} className="fa-solid fa-xmark"></i>
+      </div>
       <Table />
 
       <div
@@ -82,9 +89,6 @@ const TailorPage = () => {
         }
         className="modal"
       >
-        <div className="close-btn">
-          <i onClick={closeModal} className="fa-solid fa-xmark"></i>
-        </div>
         <FormCustom />
       </div>
     </Fragment>

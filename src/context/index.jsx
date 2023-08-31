@@ -15,7 +15,7 @@ const GeneralContext = ({ children }) => {
   const [role, setRole] = useState("");
   const [showCustomerModal, setShowCustomerModal] = useState(false);
   const [show, setShow] = useState(false);
-  const [customerId, setCustomerId] = useState(null);
+  const [customerInfo, setCustomerInfo] = useState({});
   const [page, setPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(10);
   const [search, setSearch] = useState("");
@@ -23,19 +23,13 @@ const GeneralContext = ({ children }) => {
   const [endDate, setEndDate] = useState("");
   const [createdAt, setCreatedAt] = useState("");
   const [dropdownShow, setDropdownShow] = useState(false);
-  const [costumeValue, setCostumeValue] = useState("");
-  const [trouthersValue, setTrouthersValue] = useState("");
-  const [jacketValue, setJacketValue] = useState("");
   const [form] = Form.useForm();
 
   const closeModal = () => {
     setShow(false);
-    setCostumeValue("");
-    setJacketValue("");
-    setTrouthersValue("");
     form.resetFields();
     setSelected(null);
-    setCustomerId(null);
+    setCustomerInfo({});
     setEndDate("");
     setCreatedAt("");
   };
@@ -56,11 +50,16 @@ const GeneralContext = ({ children }) => {
     }
   };
 
+  const handleCustomerInfo = (e) => {
+    const { value, name } = e.target;
+    setCustomerInfo({ ...customerInfo, [name]: value });
+  };
+
   const addNewCustomer = async (values) => {
     try {
       setLoadingBtn(true);
       const { data } = await request.post("customers", values);
-      setCustomerId(data);
+      setCustomerInfo({ ...values, id: data });
       form.setFieldValue("customer", values.name);
       setShowCustomerModal(false);
       setDropdownShow(false);
@@ -72,29 +71,27 @@ const GeneralContext = ({ children }) => {
     }
   };
 
-  const order = {};
-
-  const getProduct = () => {
-    let res = "";
-    res += (costumeValue ? costumeValue : "_") + ",";
-    res += (trouthersValue ? trouthersValue : "_") + ",";
-    res += jacketValue ? jacketValue : "_";
-    return res;
+  const editCustomer = async () => {
+    console.log(customerInfo);
+    try {
+      await request.post("customers", customerInfo);
+    } catch (err) {
+      console.log(err.message);
+    }
   };
 
+  const order = {};
+
   const setCustomer = (customerInfo) => {
-    setCustomerId(customerInfo.id);
+    setCustomerInfo(customerInfo);
     form.setFieldValue("customer", customerInfo.name);
     setDropdownShow(false);
   };
 
   const submit = async () => {
-    const values = await form.getFieldsValue();
+    const res = await form.getFieldsValue();
     let arr = [];
-    let res = { ...values };
-    console.log(res);
-    order.customerId = customerId;
-    order.products = getProduct();
+    order.customerId = customerInfo.id;
     delete res.customer;
     order.toPay = res.price;
     delete res.price;
@@ -104,61 +101,71 @@ const GeneralContext = ({ children }) => {
     delete res.priority;
     order.endDate = endDate;
     delete res.endDate;
-    console.log(res);
+    let products = "";
     for (let i in res) {
+      if (res[i] && typeof res[i] === "boolean") {
+        if (products.length > 0) {
+          console.log(products);
+          products += ", ";
+        }
+        products += i;
+      }
       arr.push({ name: i, value: res[i] });
     }
+    products += "," + res.bichish;
+    console.log(products, res.bichish);
+    order.products = products;
     order.params = arr;
+
     console.log(order);
     if (selected) {
       const id = selected;
-      putOrder({ id, order });
+      try {
+        await putOrder({ id, order });
+        editCustomer();
+      } catch (err) {
+        console.log(err);
+      } finally {
+        getOrders({ page, pageLimit, search });
+      }
     } else {
-      postOrder(order);
+      try {
+        await postOrder(order);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        getOrders({ page, pageLimit, search });
+      }
     }
-    setShow(false);
-    getOrders({ page, pageLimit, search });
-  };
-
-  const onChangeCostume = (e) => {
-    setCostumeValue(e.target.value);
-  };
-
-  const onChangeTrouthers = (e) => {
-    setTrouthersValue(e.target.value);
-  };
-
-  const onChangeJacket = (e) => {
-    setJacketValue(e.target.value);
+    closeModal();
   };
 
   const editOrder = async (id) => {
     setSelected(id);
-    try {
-      const { data } = await request(`customers/${id}`);
-      setCostumeValue(data);
-    } catch (err) {
-      console.log(err);
-    }
+
     try {
       const obj = {};
       const { data } = await request(`orders/${id}`);
       const res = { ...data.item };
-      setCustomerId(res.customerId);
+      try {
+        const { data } = await request(`customers/${res.customerId}`);
+        setCustomerInfo(data.item);
+      } catch (err) {
+        console.log(err);
+      }
       obj.customer = res.customer;
       setEndDate(res.endDate.split("T")[0]);
       setCreatedAt(res.createdAt.split("T")[0]);
       obj.price = role === "admin" ? res.toPay : "";
       obj.notes = res.notes;
       obj.priority = res.priority;
-      const splitArr = res.products.split(",");
-      setCostumeValue(splitArr[0] !== "_" ? splitArr[0] : "");
-      setTrouthersValue(splitArr[1] !== "_" ? splitArr[1] : "");
-      setJacketValue(splitArr[2] !== "_" ? splitArr[2] : "");
       res.params.map((el) => {
         const { name, value } = el;
-        obj[name] = value;
-      })
+        if (value === "true") obj[name] = true;
+        else if (value === "false") obj[name] = false;
+        else obj[name] = value;
+      });
+      console.log(obj, res);
       form.setFieldsValue(obj);
       setShow(true);
     } catch (err) {
@@ -178,7 +185,6 @@ const GeneralContext = ({ children }) => {
         const { data } = await request.post("customers/get", {
           searchText: text,
         });
-        console.log(data);
         setDropdownData(data.page.items);
       } catch {
         console.log("Error");
@@ -209,22 +215,20 @@ const GeneralContext = ({ children }) => {
 
   const complete = async () => {
     const checkComplete = prompt("Izoh qoldiring!");
-    
-    if (checkComplete) {
-      try {
-        setLoadingBtn(true);
-        await request.put(`orders/${selected}/complete`, {
-          notes: checkComplete,
-        });
-        toast.success("Buyurtma tugallandi!");
-        getOrders(page, pageLimit, search);
-      } catch (err) {
-        console.log(err);
-      } finally {
-        setLoadingBtn(false);
-      }
+
+    try {
+      setLoadingBtn(true);
+      await request.put(`orders/${selected}/complete`, {
+        notes: checkComplete,
+      });
+      toast.success("Buyurtma tugallandi!");
+      getOrders(page, pageLimit, search);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoadingBtn(false);
     }
-    setShow(false)
+    setShow(false);
   };
 
   const newState = {
@@ -234,17 +238,11 @@ const GeneralContext = ({ children }) => {
     setName,
     cancelOrder,
     complete,
-    costumeValue,
-    onChangeCostume,
-    jacketValue,
-    onChangeJacket,
     dropdownShow,
     onChangeDate,
     setLoadingBtn,
-    onChangeTrouthers,
     endDate,
     closeModal,
-    trouthersValue,
     createdAt,
     setPageLimit,
     autoComplete,
@@ -252,15 +250,15 @@ const GeneralContext = ({ children }) => {
     editOrder,
     setCustomer,
     selected,
-    customerId,
+    customerInfo,
     setDropdownShow,
     showCustomerModal,
     addNewCustomer,
-    setCustomerId,
     setSelected,
     show,
     setShow,
     loadingBtn,
+    handleCustomerInfo,
     handlePage,
     role,
     setRole,

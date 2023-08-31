@@ -78,7 +78,16 @@ const HistoryPage = () => {
           </label>
         </div>
       </nav>
-
+      <div
+        style={
+          show
+            ? { visibility: "visible", opacity: "1" }
+            : { visibility: "hidden", opacity: "0" }
+        }
+        className="close-btn"
+      >
+        <i onClick={closeModal} className="fa-solid fa-xmark"></i>
+      </div>
       <Table checkArchive="archive" />
 
       <div
@@ -100,9 +109,6 @@ const HistoryPage = () => {
         className="modal"
       >
         {selected ? <h2>BUYURTMA</h2> : null}
-        <div className="close-btn">
-          <i onClick={closeModal} className="fa-solid fa-xmark"></i>
-        </div>
         <FormCustom />
       </div>
     </Fragment>

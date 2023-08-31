@@ -17,7 +17,7 @@ import "./admin.scss";
 import { useAuth } from "../../states/auth";
 
 const AdminPage = () => {
-  const { user,logOut } = useAuth();
+  const { user, logOut } = useAuth();
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const [accountShow, setAccountShow] = useState(false);
@@ -121,10 +121,17 @@ const AdminPage = () => {
           <div className="user">
             <img src={account} alt="" onClick={controlAccount} />
 
-            <div style={accountShow?{visibility:"visible",opacity:"1"}:{visibility:"hidden",opacity:"0"}} className="logOut">
+            <div
+              style={
+                accountShow
+                  ? { visibility: "visible", opacity: "1" }
+                  : { visibility: "hidden", opacity: "0" }
+              }
+              className="logOut"
+            >
               <img src={account} alt="" />
               <h4>{user[0].toUpperCase() + user.slice(1).toLowerCase()}</h4>
-              <div onClick={()=>logOut(navigate)}>
+              <div onClick={() => logOut(navigate)}>
                 <p>Chiqish</p>
                 <i className="fa-solid fa-right-from-bracket"></i>
               </div>
@@ -147,7 +154,16 @@ const AdminPage = () => {
       </nav>
 
       <Table />
-
+      <div
+        style={
+          show
+            ? { visibility: "visible", opacity: "1" }
+            : { visibility: "hidden", opacity: "0" }
+        }
+        className="close-btn"
+      >
+        <i onClick={closeModal} className="fa-solid fa-xmark"></i>
+      </div>
       <div
         style={
           show
@@ -166,9 +182,6 @@ const AdminPage = () => {
         }
         className="modal"
       >
-        <div className="close-btn">
-          <i onClick={closeModal} className="fa-solid fa-xmark"></i>
-        </div>
         {!selected ? <h2>BUYURTMA</h2> : null}
         <FormCustom check="admin" setName={setCustomerName} />
       </div>

@@ -2,10 +2,11 @@
   padding: 10px 20px;
   background: white;
   gap: 20px;
+  width: 1600px !important;
 
-  .forms {
+  .forms{
     display: flex;
-
+    width: 100% ;
     label {
       font-weight: 600;
       font-size: 16px;
@@ -14,8 +15,7 @@
     .addOrderModal {
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      width: 300px;
+      width: 280px;
       padding-right: 10px;
       border-right: 1.5px solid #172F6C;
 
@@ -23,6 +23,17 @@
         display: inline-block;
         padding-bottom: 5px;
         color: #172F6C;
+      }
+
+      .phoneNumber1,
+      .phoneNumber2 {
+        display: flex;
+        flex-direction: column;
+
+        input {
+          padding: 6px 5px;
+          outline: none;
+        }
       }
 
       .ant-input-number,
@@ -36,10 +47,6 @@
         box-sizing: border-box;
         border: 1.5px solid #172F6C;
         color: #172F6C;
-      }
-
-      #notes {
-        max-height: 80px;
       }
 
       #customer {
@@ -94,6 +101,7 @@
       #price,
       #endDate {
         color: #172F6C;
+        outline: none;
       }
 
       .receiveDate {
@@ -104,7 +112,7 @@
       .checkBox {
         display: flex;
         align-items: center;
-        height: 50px;
+        padding-top: 10px;
         gap: 8px;
 
         .ant-checkbox-inner,
@@ -121,73 +129,133 @@
     .formSizes {
       padding-left: 10px;
       display: flex;
+      gap: 10px;
 
       .orderSizes {
         display: flex;
         flex-direction: column;
 
-        .ant-form-item-control-input-content {
-          width: 70px;
-          flex-grow: 0;
-        }
-
         label {
           font-size: 15px;
-          width: 110px !important;
+          width: 70px !important;
           color: #172F6C;
         }
 
         .orderSize {
           display: flex;
           padding: 2px 0px;
+
+          .ant-form-item {
+            width: 90px;
+            height: 30px;
+          }
+
+          .ant-input-affix-wrapper {
+            border-radius: 0px !important;
+            border: 1.5px solid #172F6C;
+            padding: 2px 5px;
+          }
+
+          .ant-input {
+            margin: 0 !important;
+            border-radius: 0px !important;
+            padding: 0px !important;
+            color: #172F6C !important;
+          }
         }
       }
 
-      .ant-input-number {
-        margin: 0 !important;
-        border-radius: 0px !important;
-        padding: 0px !important;
-        border: 1.5px solid #172F6C;
-        color: #172F6C !important;
-      }
+      .form-right {
+        .img {
+          &-top {
+            display: flex;
 
-      .ant-input-number-input {
-        color: #172F6C;
-      }
+            img {
+              width: 100px;
+            }
 
-      .classicSuit {
-        display: flex;
-        flex-direction: column;
+            .ant-checkbox {
+              transform: translate(40px);
+            }
 
-        p {
-          text-align: center;
+            .ant-checkbox-wrapper {
+              display: flex;
+              flex-direction: column;
+              width: 120px;
+              align-items: center;
+              text-align: center;
+            }
+
+            .yoqalar {
+              .ant-checkbox {
+                transform: translate(40px);
+              }
+
+              .ant-checkbox-wrapper {
+                display: flex;
+                flex-direction: column;
+                width: 70px !important;
+                align-items: center;
+                text-align: center;
+                height: 90px !important;
+
+              }
+
+              img {
+                width: 70px;
+              }
+            }
+
+            .babochka {
+              padding-left: 20px;
+
+              .ant-checkbox {
+                transform: translate(40px);
+              }
+
+              .ant-checkbox-wrapper {
+                display: flex;
+                flex-direction: column;
+                width: 80px !important;
+                align-items: center;
+                text-align: center;
+                height: 100px !important;
+              }
+
+              img {
+                width: 70px;
+              }
+            }
+
+            .yoqa {
+              padding-left: 20px;
+
+              .ant-checkbox {
+                transform: translate(40px);
+              }
+
+              .ant-checkbox-wrapper {
+                display: flex;
+                flex-direction: column;
+                width: 70px !important;
+                align-items: center;
+                text-align: center;
+                height: 50px !important;
+              }
+
+              img {
+                width: 70px;
+              }
+            }
+          }
+
         }
-      }
 
-      .Radios {
-        width: 400px;
 
-        img {
-          width: 100px;
-        }
 
         label {
           font-size: 14px;
           color: rgba(0, 0, 0, 0.776);
-        }
-
-        .ant-radio {
-          transform: translate(40px);
-        }
-
-        .costumRadio {
-          display: flex;
-
-        }
-
-        .ant-radio-wrapper span:last-child {
-          padding: 0px;
-
         }
       }
 
@@ -199,6 +267,7 @@
           border-radius: 0px !important;
           color: #172F6C;
           border: 1.5px solid #172F6C;
+          padding: 2px 5px;
         }
 
         div {
@@ -213,9 +282,17 @@
             color: #172F6C;
           }
         }
+        .bichish{
+          padding-left: 20px;
+          label{
+            font-size: 20px;
+          }
+        }
       }
     }
-
+    @media(min-width:1440px){
+      width: auto;
+    }
   }
 
   .confirmBtn {
@@ -397,3 +474,4 @@
     padding: 5px 10px;
   }
 }
+
