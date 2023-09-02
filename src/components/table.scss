@@ -6,7 +6,7 @@
   width: 100%;
   border-collapse: collapse;
 
-  @media(max-width:1000px){
+  @media(max-width:1000px) {
     min-width: 1000px;
   }
 
@@ -60,6 +60,9 @@
       }
     }
   }
+  .priority{
+    width: 20px;
+  }
 
   tbody {
     border: 1px solid #bfbdbd;
@@ -87,44 +90,45 @@
         color: #172f6c;
       }
 
-      .didline-td {
-        position: relative;
-        cursor: default;
+      // .didline-td {
+      //   position: relative;
+      //   cursor: default;
 
-        .tooltiptext {
-          opacity: 0;
-          width: 100px;
-          background-color: black;
-          color: #fff;
-          text-align: center;
-          border-radius: 6px;
-          padding: 5px 0;
-          position: absolute;
-          z-index: 1;
-          left: -14px;
-          top: -15px;
-          transition: 0.2s ease-in-out;
+      //   .tooltiptext {
+      //     opacity: 0;
+      //     width: 100px;
+      //     background-color: black;
+      //     color: #fff;
+      //     text-align: center;
+      //     border-radius: 6px;
+      //     padding: 5px 0;
+      //     position: absolute;
+      //     z-index: 1;
+      //     left: -14px;
+      //     top: -15px;
+      //     transition: 0.2s ease-in-out;
 
-          &::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: black transparent transparent transparent;
-          }
-        }
+      //     &::after {
+      //       content: "";
+      //       position: absolute;
+      //       top: 100%;
+      //       left: 50%;
+      //       margin-left: -5px;
+      //       border-width: 5px;
+      //       border-style: solid;
+      //       border-color: black transparent transparent transparent;
+      //     }
+      //   }
 
-        &:hover .tooltiptext {
-          opacity: 1;
-          transition-delay: 0.5s;
-        }
-      }
+      //   &:hover .tooltiptext {
+      //     opacity: 1;
+      //     transition-delay: 0.5s;
+      //   }
+      // }
 
       .product-td {
         max-width: 400px !important;
+        padding: 0px 20px 0px 0px !important;
         overflow: hidden;
       }
 

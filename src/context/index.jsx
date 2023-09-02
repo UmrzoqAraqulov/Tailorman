@@ -93,8 +93,16 @@ const GeneralContext = ({ children }) => {
     let arr = [];
     order.customerId = customerInfo.id;
     delete res.customer;
-    order.toPay = res.price;
-    delete res.price;
+    order.toPay = res.toPay;
+    delete res.toPay;
+    if (+res.payed > 0 && selected) {
+      try {
+        await request.put(`orders/${selected}/pay`, {amount:+res.payed});
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    delete res.payed;
     order.notes = res.notes ? res.notes : "";
     delete res.notes;
     order.priority = res.priority;
@@ -103,9 +111,8 @@ const GeneralContext = ({ children }) => {
     delete res.endDate;
     let products = "";
     for (let i in res) {
-      if (res[i] && typeof res[i] === "boolean") {
+      if (res[i] && typeof res[i] === "boolean" && i !== "bichish") {
         if (products.length > 0) {
-          console.log(products);
           products += ", ";
         }
         products += i;
@@ -113,7 +120,6 @@ const GeneralContext = ({ children }) => {
       arr.push({ name: i, value: res[i] });
     }
     products += "," + res.bichish;
-    console.log(products, res.bichish);
     order.products = products;
     order.params = arr;
 
@@ -142,7 +148,6 @@ const GeneralContext = ({ children }) => {
 
   const editOrder = async (id) => {
     setSelected(id);
-
     try {
       const obj = {};
       const { data } = await request(`orders/${id}`);
@@ -153,19 +158,20 @@ const GeneralContext = ({ children }) => {
       } catch (err) {
         console.log(err);
       }
+      console.log(res);
       obj.customer = res.customer;
       setEndDate(res.endDate.split("T")[0]);
       setCreatedAt(res.createdAt.split("T")[0]);
-      obj.price = role === "admin" ? res.toPay : "";
+      obj.toPay = role === "admin" ? res.toPay : "";
       obj.notes = res.notes;
       obj.priority = res.priority;
+      obj.payed = role === "admin" ? res.payed : "";
       res.params.map((el) => {
         const { name, value } = el;
         if (value === "true") obj[name] = true;
         else if (value === "false") obj[name] = false;
         else obj[name] = value;
       });
-      console.log(obj, res);
       form.setFieldsValue(obj);
       setShow(true);
     } catch (err) {

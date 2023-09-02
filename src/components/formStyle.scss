@@ -2,11 +2,12 @@
   padding: 10px 20px;
   background: white;
   gap: 20px;
-  width: 1600px !important;
+  width: 1300px !important;
 
-  .forms{
+  .forms {
     display: flex;
-    width: 100% ;
+    width: 100%;
+
     label {
       font-weight: 600;
       font-size: 16px;
@@ -36,14 +37,30 @@
         }
       }
 
+      #endDate,
+      #receiveDate,
+      #customer {
+        padding: 4px 0px;
+      }
+
+      .ant-input-number-affix-wrapper {
+        width: 100%;
+        border: none;
+        padding: 0;
+        .ant-input-number{
+          padding: 0px 10px;
+        }
+      }
+
       .ant-input-number,
       .ant-input-affix-wrapper,
       .ant-picker,
       #endDate,
       #receiveDate,
       #notes {
+        width: 100%;
+        padding: auto 10px;
         border-radius: 0px !important;
-        padding: 8px 10px !important;
         box-sizing: border-box;
         border: 1.5px solid #172F6C;
         color: #172F6C;
@@ -166,12 +183,34 @@
       }
 
       .form-right {
+        padding-left: 20px;
+
         .img {
           &-top {
             display: flex;
 
             img {
-              width: 100px;
+              width: 80px;
+            }
+
+            .ant-checkbox {
+              transform: translate(40px);
+            }
+
+            .ant-checkbox-wrapper {
+              display: flex;
+              flex-direction: column;
+              width: 80px;
+              align-items: center;
+              text-align: center;
+            }
+          }
+
+          &-bottom {
+            display: flex;
+
+            img {
+              width: 40px;
             }
 
             .ant-checkbox {
@@ -184,26 +223,6 @@
               width: 120px;
               align-items: center;
               text-align: center;
-            }
-
-            .yoqalar {
-              .ant-checkbox {
-                transform: translate(40px);
-              }
-
-              .ant-checkbox-wrapper {
-                display: flex;
-                flex-direction: column;
-                width: 70px !important;
-                align-items: center;
-                text-align: center;
-                height: 90px !important;
-
-              }
-
-              img {
-                width: 70px;
-              }
             }
 
             .babochka {
@@ -230,22 +249,15 @@
             .yoqa {
               padding-left: 20px;
 
+              .ant-checkbox-wrapper {
+                // width: 60px !important;
+                text-align: center;
+              }
+
               .ant-checkbox {
                 transform: translate(40px);
               }
 
-              .ant-checkbox-wrapper {
-                display: flex;
-                flex-direction: column;
-                width: 70px !important;
-                align-items: center;
-                text-align: center;
-                height: 50px !important;
-              }
-
-              img {
-                width: 70px;
-              }
             }
           }
 
@@ -282,15 +294,18 @@
             color: #172F6C;
           }
         }
-        .bichish{
+
+        .bichish {
           padding-left: 20px;
-          label{
+
+          label {
             font-size: 20px;
           }
         }
       }
     }
-    @media(min-width:1440px){
+
+    @media(min-width:1440px) {
       width: auto;
     }
   }
@@ -474,4 +489,3 @@
     padding: 5px 10px;
   }
 }
-

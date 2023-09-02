@@ -38,6 +38,7 @@ const Table = ({ checkArchive }) => {
               <th className="first-th" scope="col">
                 #
               </th>
+              <th className="priority"></th>
               <th className="name-th" scope="col">
                 MIJOZLAR
               </th>
@@ -75,31 +76,19 @@ const Table = ({ checkArchive }) => {
                       {(page - 1) * pageLimit + i + 1}
                     </td>
                     <td>
-                      {el?.customer.charAt(0).toUpperCase() +
-                        el?.customer.slice(1)}
+                      {el.priority==1?"⏳":""}
+                    </td>
+                    <td
+                      style={{
+                        textTransform: "capitalize",
+                        padding: "0px 10px 0px 0px",
+                      }}
+                    >
+                      {el?.customer}
                     </td>
                     <td>{el?.phone1}</td>
-                    <td>
-                      {el?.products}
-                      {/* {el?.products?.split(",").slice(0, -1).join(",") + " "} */}
-                      {/* {el?.products?.length > 6
-                        ? el?.products
-                            ?.split(",")
-                            .slice(5, el?.products?.length < 10 ? -1 : 10)
-                            .join(",") + " "
-                        : ""}
-                      {el?.products?.length > 10
-                        ? el?.products
-                            ?.split(",")
-                            .slice(10, el?.products?.length < 15 ? -1 : 15)
-                            .join(",") + " "
-                        : ""}
-                      {el?.products?.length > 10
-                        ? el?.products
-                            ?.split(",")
-                            .slice(15, el?.products?.length < 20 ? -1 : 20)
-                            .join(",")
-                        : ""} */}
+                    <td className="product-td">
+                      {el?.products.split(",").slice(0, -1).join(", ")}
                     </td>
                     <td style={{ color: getColorDate(el?.endDate) }}>
                       {el?.endDate?.split("T")[0]}
@@ -107,11 +96,11 @@ const Table = ({ checkArchive }) => {
                     <td>{el?.createdAt?.split("T")[0]}</td>
                     {role === "admin" ? <td>{el?.toPay}</td> : null}
                     <td className="last-td">
-                      {
-                        el.products.split(",")[
-                          el.products.split(",").length - 1
-                        ]==="true"?"✅":"❌"
-                      }
+                      {el.products.split(",")[
+                        el.products.split(",").length - 1
+                      ] === "true"
+                        ? "✅"
+                        : "❌"}
                     </td>
                   </tr>
                 ))

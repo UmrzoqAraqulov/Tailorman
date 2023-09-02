@@ -1,4 +1,4 @@
-import { Button, Checkbox, Form, Input } from "antd";
+import { Button, Checkbox, Form, Input, InputNumber } from "antd";
 import PropTypes from "prop-types";
 import { useContext } from "react";
 import { GeneralContextInfo } from "../context";
@@ -180,19 +180,29 @@ const FormCustom = ({ check, setName }) => {
             />
           </div>
           <div>
-            <label htmlFor="price">Narx</label>
+            <label htmlFor="toPay">Narx</label>
             <Form.Item
-              name="price"
+              name="toPay"
               hasFeedback
-              id="price"
+              id="toPay"
               rules={[
                 {
                   required: true,
                   message: "Iltimos Narxni kiriting!",
+                  type: "number",
                 },
               ]}
             >
-              <Input />
+              <InputNumber />
+            </Form.Item>
+          </div>
+          <div>
+            <label htmlFor="payed">{"To'langan narx"}</label>
+            <Form.Item
+              name="payed"
+              id="payed"
+            >
+              <InputNumber />
             </Form.Item>
           </div>
           <div className="checkBox">
@@ -449,32 +459,6 @@ const FormCustom = ({ check, setName }) => {
                     </div>
                   </Checkbox>
                 </Form.Item>
-                <Form.Item name="Галстук" valuePropName="checked">
-                  <Checkbox>
-                    <div>
-                      <img src={galstuk} alt="eskiz" />
-                      <p>Галстук</p>
-                    </div>
-                  </Checkbox>
-                </Form.Item>
-                <div className="flex flex-col babochka">
-                  <Form.Item name="Бабочка" valuePropName="checked">
-                    <Checkbox>
-                      <div>
-                        <img src={babochka} alt="eskiz" />
-                        <p>Бабочка</p>
-                      </div>
-                    </Checkbox>
-                  </Form.Item>
-                  <Form.Item name="Пояс" valuePropName="checked">
-                    <Checkbox>
-                      <div>
-                        <img src={poyas} alt="eskiz" />
-                        <p>Пояс</p>
-                      </div>
-                    </Checkbox>
-                  </Form.Item>
-                </div>
               </div>
 
               <div className="img-top">
@@ -534,29 +518,53 @@ const FormCustom = ({ check, setName }) => {
                     </div>
                   </Checkbox>
                 </Form.Item>
-                <div className="flex flex-col">
-                  <Form.Item
-                    className="yoqalar"
-                    name="Ёқа1"
-                    valuePropName="checked"
-                  >
-                    <Checkbox>
-                      <img src={stil1} alt="eskiz" />
-                    </Checkbox>
-                  </Form.Item>
-                  <Form.Item
-                    className="yoqalar"
-                    name="Ёқа2"
-                    valuePropName="checked"
-                  >
-                    <Checkbox>
-                      <img src={stil2} alt="eskiz" />
-                    </Checkbox>
-                  </Form.Item>
-                </div>
+              </div>
+              <div className="img-bottom">
+                <Form.Item name="Галстук" valuePropName="checked">
+                  <Checkbox>
+                    <div>
+                      <img src={galstuk} alt="eskiz" />
+                      <p>Галстук</p>
+                    </div>
+                  </Checkbox>
+                </Form.Item>
+                <Form.Item name="Бабочка" valuePropName="checked">
+                  <Checkbox>
+                    <div>
+                      <img src={babochka} alt="eskiz" />
+                      <p>Бабочка</p>
+                    </div>
+                  </Checkbox>
+                </Form.Item>
+                <Form.Item name="Пояс" valuePropName="checked">
+                  <Checkbox>
+                    <div>
+                      <img src={poyas} alt="eskiz" />
+                      <p>Пояс</p>
+                    </div>
+                  </Checkbox>
+                </Form.Item>
                 <Form.Item className="yoqa" name="Ёқа3" valuePropName="checked">
                   <Checkbox>
                     <img src={stil3} alt="eskiz" />
+                  </Checkbox>
+                </Form.Item>
+                <Form.Item
+                  className="yoqalar"
+                  name="Ёқа1"
+                  valuePropName="checked"
+                >
+                  <Checkbox>
+                    <img src={stil1} alt="eskiz" />
+                  </Checkbox>
+                </Form.Item>
+                <Form.Item
+                  className="yoqalar"
+                  name="Ёқа2"
+                  valuePropName="checked"
+                >
+                  <Checkbox>
+                    <img src={stil2} alt="eskiz" />
                   </Checkbox>
                 </Form.Item>
               </div>
