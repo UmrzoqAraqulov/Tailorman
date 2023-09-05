@@ -11,6 +11,7 @@ const GeneralContext = ({ children }) => {
   const { postOrder, getOrders, putOrder } = useOrders();
 
   const [loadingBtn, setLoadingBtn] = useState();
+  const [loadingTable, setLoadingTable] = useState();
   const [selected, setSelected] = useState(null);
   const [role, setRole] = useState("");
   const [showCustomerModal, setShowCustomerModal] = useState(false);
@@ -72,7 +73,6 @@ const GeneralContext = ({ children }) => {
   };
 
   const editCustomer = async () => {
-    console.log(customerInfo);
     try {
       await request.post("customers", customerInfo);
     } catch (err) {
@@ -97,7 +97,7 @@ const GeneralContext = ({ children }) => {
     delete res.toPay;
     if (+res.payed > 0 && selected) {
       try {
-        await request.put(`orders/${selected}/pay`, {amount:+res.payed});
+        await request.put(`orders/${selected}/pay`, { amount: +res.payed });
       } catch (err) {
         console.log(err);
       }
@@ -123,7 +123,6 @@ const GeneralContext = ({ children }) => {
     order.products = products;
     order.params = arr;
 
-    console.log(order);
     if (selected) {
       const id = selected;
       try {
@@ -149,6 +148,7 @@ const GeneralContext = ({ children }) => {
   const editOrder = async (id) => {
     setSelected(id);
     try {
+      setLoadingTable(true);
       const obj = {};
       const { data } = await request(`orders/${id}`);
       const res = { ...data.item };
@@ -158,7 +158,6 @@ const GeneralContext = ({ children }) => {
       } catch (err) {
         console.log(err);
       }
-      console.log(res);
       obj.customer = res.customer;
       setEndDate(res.endDate.split("T")[0]);
       setCreatedAt(res.createdAt.split("T")[0]);
@@ -176,6 +175,8 @@ const GeneralContext = ({ children }) => {
       setShow(true);
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoadingTable(false);
     }
   };
 
@@ -253,6 +254,7 @@ const GeneralContext = ({ children }) => {
     setPageLimit,
     autoComplete,
     submit,
+    loadingTable,
     editOrder,
     setCustomer,
     selected,
